@@ -1,5 +1,3 @@
-package connected;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -9,11 +7,12 @@ import javax.swing.JPanel;
 
 public class Screen extends JPanel{
 
-    private int width;
-    private int height;
-    int counter, timeMs;
+    private final int width;
+    private final int height;
+    int counter;
     int frames = 0;
-
+    int timeMs;
+    
     double originVectorX = 1;
     double originVectorY = 0;
     
@@ -22,17 +21,17 @@ public class Screen extends JPanel{
     double Xpusher = 0;
     double Ypusher = 0;
     double eq;
-    
     ArrayList<GameObject> objects = new ArrayList<GameObject>();
+    
+    Background bg;
     public Screen(int w, int h, int tm){
         this.width = w;
         this.height = h;
-        timeMs = tm;
         player = new GameObject(width / 2, 200, 50);
         object = new GameObject(width / 2, 200, 150);
-        
-        objects.add(object);
+        bg = new Background(width, height);
         objects.add(player);
+        timeMs = tm;
     }
     
     @Override
@@ -44,23 +43,17 @@ public class Screen extends JPanel{
         g.setRenderingHints(rh);
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, width, height);
-        g.setColor(Color.BLUE);
-        g.drawLine(player.x, player.y, object.x, object.y);
-        
+        bg.draw(g, timeMs);
+        g.setColor(Color.WHITE);
         
         for(GameObject ob: objects){
             ob.draw(g);   
         }
-        if(player.collide(object, g)){
-            player.setColor(Color.RED);
-            objects.add(new GameObject(player.x, player.y, 5));
-        }else{
-            player.setColor(Color.WHITE);
-        }
     }
    
-    int currentAngle = (int) (Math.random() * 360 + 1);
+    
     void render(boolean[] keys){
+       // Hangle user input
        if(keys[37] && keys[38]) player.move(225, timeMs);
        else if(keys[37] && keys[40]) player.move(135, timeMs);
        else if(keys[38] && keys[39]) player.move(315, timeMs);
