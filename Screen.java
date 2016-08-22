@@ -53,7 +53,7 @@ public class Screen extends JPanel{
     
     void render(boolean[] keys){
     	frames++;
-       // Hangle user input
+       // Handle user input
        if(keys[37] && keys[38]) player.move(225, timeMs);
        else if(keys[37] && keys[40]) player.move(135, timeMs);
        else if(keys[38] && keys[39]) player.move(315, timeMs);
