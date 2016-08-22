@@ -16,7 +16,7 @@ public class Screen extends JPanel{
     double originVectorX = 1;
     double originVectorY = 0;
     
-    public GameObject player, object;
+    public PlayerObject player;
     
     double Xpusher = 0;
     double Ypusher = 0;
@@ -27,8 +27,7 @@ public class Screen extends JPanel{
     public Screen(int w, int h, int tm){
         this.width = w;
         this.height = h;
-        player = new GameObject(width / 2, 200, 50);
-        object = new GameObject(width / 2, 200, 150);
+        player = new PlayerObject(width / 2, 200, 50);
         bg = new Background(width, height);
         objects.add(player);
         timeMs = tm;
@@ -45,15 +44,16 @@ public class Screen extends JPanel{
         g.fillRect(0, 0, width, height);
         bg.draw(g, timeMs);
         g.setColor(Color.WHITE);
-        
         for(GameObject ob: objects){
             ob.draw(g);   
         }
+         player.showUI(g, width, height);
     }
    
     
     void render(boolean[] keys){
-       // Handle user input
+    	frames++;
+       // Hangle user input
        if(keys[37] && keys[38]) player.move(225, timeMs);
        else if(keys[37] && keys[40]) player.move(135, timeMs);
        else if(keys[38] && keys[39]) player.move(315, timeMs);
@@ -70,5 +70,11 @@ public class Screen extends JPanel{
            }  
        }
         repaint();    
+    }
+    public int countFps(){
+    	System.out.println(frames);
+    	int ret = frames;
+    	frames = 0;
+    	return ret;
     }
 }
