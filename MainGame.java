@@ -5,13 +5,12 @@ import javax.swing.JFrame;
 
 public class MainGame extends JFrame{
     
-    private int fps = 0;
     private final int width = 800;
     private final int height = width / 16 * 9;
     private boolean running = false;
     private Screen screen;
     private KeyBoard k = new KeyBoard();
-    public int msPerFrame = 12;
+    public int msPerFrame = 15;
     private void begin(){    
         screen = new Screen(width, height, msPerFrame);
         add(screen);
@@ -46,10 +45,8 @@ public class MainGame extends JFrame{
                 
 // FPS counter
                 fpsEnd = System.currentTimeMillis();
-                fps++;
                 if(fpsEnd - fpsTimeBegin > 1000){
-                    setTitle(Integer.toString(fps));
-                    fps = 0;
+                    setTitle(Integer.toString(screen.countFps()));
                     fpsTimeBegin = fpsEnd;
                 }
             } 
