@@ -1,0 +1,24 @@
+import java.awt.Color;
+import java.awt.Graphics2D;
+
+public class PlayerObject extends GameObject {
+
+	int x, y, size, maxHp = 100, hp = maxHp;
+	int Interval;
+	boolean shooting = false, invulnerable = false;
+	
+	public PlayerObject(int x, int y, int size) {
+		super(x, y, size);
+	}
+	
+	int i = 1;
+	public void showUI(Graphics2D g, int w, int h){
+		int barW = hp * 100 /maxHp , barH = 15, outlineW = 100;
+		int barX = w - 200, barY = h - 70;
+		g.drawString("HP:" + hp + " / " + maxHp, barX , barY);
+		g.setColor(Color.green);
+		g.fillRect(barX, barY, barW, barH);
+		g.setColor(Color.WHITE);
+		g.drawRect(barX, barY, outlineW, barH);
+	}
+}
