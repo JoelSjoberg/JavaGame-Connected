@@ -1,4 +1,4 @@
-package connected;
+
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -10,7 +10,7 @@ public class GameObject {
         this.y = y;
         this.size = size;
     }
-    int speed = 120;
+    int speed = 220;
     int counter;
     int frames = 0;
     int lastAngle;
@@ -35,14 +35,13 @@ public class GameObject {
     public void move(int currentAngle, int timeMs){
         //originVectorX need to be reset to one each itteration to rotate from vector (1,0)
         //speed++;
-        
         eq = (double) 1000/timeMs/speed;
-        originVectorX = 1/eq;
-        Xpusher += originVectorX * Math.cos(Math.toRadians(currentAngle) 
-            - originVectorY * Math.sin(Math.toRadians(currentAngle)));
-        Ypusher += originVectorX * Math.sin(Math.toRadians(currentAngle))
-            + originVectorY * Math.cos(Math.toRadians(currentAngle));
-          
+        vector[0] = 1/eq;
+        Xpusher += vector[0] * Math.cos(Math.toRadians(currentAngle) 
+            - vector[1] * Math.sin(Math.toRadians(currentAngle)));
+        Ypusher += vector[0] * Math.sin(Math.toRadians(currentAngle))
+            + vector[1] * Math.cos(Math.toRadians(currentAngle));
+         
         
         // X and Y need to be incremented when they are >= 1
         // the whole number is how many pixels to move and the remainder
@@ -54,9 +53,10 @@ public class GameObject {
             y += Math.round(Ypusher) * 1000 / 1000.0;
             Ypusher -= Math.round(Ypusher);
         }
-        
+        // Print out info on vartiables 
+        //System.out.println("Frames: " + frames + " | eq = " + 1000 / timeMs / speed + "    | Ypusher: " + Ypusher + " | Xpusher: " + Xpusher);
+        //System.out.println("X: " + x + "    |   Y: " + y);
     }
-    
     // Collision detection with circles!
     double xdif, ydif, distance;
     public boolean collide(GameObject ob, Graphics2D g){
