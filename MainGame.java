@@ -5,12 +5,12 @@ import javax.swing.JFrame;
 
 public class MainGame extends JFrame{
     
-    private final int width = 800;
+    private final int width = 1000;
     private final int height = width / 16 * 9;
     private boolean running = false;
     private Screen screen;
     private KeyBoard k = new KeyBoard();
-    public int msPerFrame = 15;
+    public int msPerFrame = 5;
     private void begin(){    
         screen = new Screen(width, height, msPerFrame);
         add(screen);

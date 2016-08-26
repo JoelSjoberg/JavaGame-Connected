@@ -16,7 +16,7 @@ public class GameObject {
         this.size = size;
         this.speed = speed;
     }
-    int speed = 120;
+    int speed = 160;
     int counter;
     int frames = 0;
     int lastAngle;
