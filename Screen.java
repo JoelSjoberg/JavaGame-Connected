@@ -47,13 +47,23 @@ public class Screen extends JPanel{
         for(GameObject ob: objects){
             ob.draw(g);   
         }
-         player.showUI(g, width, height);
+        if(player.shots.size() > 0){
+        	for(GameObject ob: player.shots){
+        		ob.draw(g);
+        		ob.move(270, timeMs);
+        		if(ob.y < 0){
+        			player.shots.remove(this);
+        		}
+        	}
+        }
+         player.update(g, width, height);
     }
    
     
     void render(boolean[] keys){
     	frames++;
        // Handle user input
+    	// Moving
        if(keys[37] && keys[38]) player.move(225, timeMs);
        else if(keys[37] && keys[40]) player.move(135, timeMs);
        else if(keys[38] && keys[39]) player.move(315, timeMs);
@@ -69,10 +79,15 @@ public class Screen extends JPanel{
                 player.move(90, timeMs);
            }  
        }
+       // abilities
+       if(keys[65]){
+    	   player.shooting = true;
+       }else{
+    	   player.shooting = false;
+       }
         repaint();    
     }
     public int countFps(){
-    	System.out.println(frames);
     	int ret = frames;
     	frames = 0;
     	return ret;
