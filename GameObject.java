@@ -10,7 +10,13 @@ public class GameObject {
         this.y = y;
         this.size = size;
     }
-    int speed = 220;
+    public GameObject(int x, int y, int size, int speed){
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.speed = speed;
+    }
+    int speed = 120;
     int counter;
     int frames = 0;
     int lastAngle;
@@ -35,6 +41,7 @@ public class GameObject {
     public void move(int currentAngle, int timeMs){
         //originVectorX need to be reset to one each itteration to rotate from vector (1,0)
         //speed++;
+        //size++;
         eq = (double) 1000/timeMs/speed;
         vector[0] = 1/eq;
         Xpusher += vector[0] * Math.cos(Math.toRadians(currentAngle) 
