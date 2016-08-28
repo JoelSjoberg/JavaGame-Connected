@@ -10,15 +10,15 @@ public class PlayerObject extends GameObject {
 	//regular shooting
 	int interval = 200;
 	long lastShot = 0;
-	int shotSize = 5, shotSpeed = 200;
+	int shotSize = 3, shotSpeed = 200;
 	int[] shotOrigin = {shotSize, shotSpeed};
 	boolean shooting = false, invulnerable = false;
 	
 	//charge variables
-	int maxCharge = 10;
+	int maxCharge = 15;
 	int charge = 0;
 	int chargeLen = 50;
-	int chargeTime = 20;
+	int chargeTime = 100;
 	long currChargeTime = 0;
 	
 	
@@ -72,7 +72,7 @@ public class PlayerObject extends GameObject {
 		if(System.currentTimeMillis() - currChargeTime > chargeTime && maxCharge > charge){
 			currChargeTime = System.currentTimeMillis();
 			charge++;
-			shotSize ++;
+			shotSize += 1;
 			shotSpeed += 20;
 		}
 	}

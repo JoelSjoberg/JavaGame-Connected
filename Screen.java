@@ -21,6 +21,8 @@ public class Screen extends JPanel{
     double Xpusher = 0;
     double Ypusher = 0;
     double eq;
+    
+    boolean paused = false;
     ArrayList<GameObject> objects = new ArrayList<GameObject>();
     
     Background bg;
@@ -63,6 +65,7 @@ public class Screen extends JPanel{
     void render(boolean[] keys){
     	frames++;
        // Handle user input
+    	
     	// Moving
        if(keys[37] && keys[38]) player.move(225, timeMs);
        else if(keys[37] && keys[40]) player.move(135, timeMs);

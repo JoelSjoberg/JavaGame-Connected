@@ -37,7 +37,7 @@ public class MainGame extends JFrame{
             prev = current;
             lag += elapsed;
             
-// input here
+// Render the screen
             
             if(lag >= msPerFrame){
                 screen.render(k.getKeys());
