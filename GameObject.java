@@ -54,10 +54,10 @@ public class GameObject {
         // the whole number is how many pixels to move and the remainder
         // MUST BE SAVED!(for science)
         if(Xpusher > 1 || Xpusher < -1){
-            x += Math.round(Xpusher)*1000 / 1000.0;
+            this.x += Math.round(Xpusher)*1000 / 1000.0;
             Xpusher -= Math.round(Xpusher);
         }if(Ypusher > 1 || Ypusher < -1){
-            y += Math.round(Ypusher) * 1000 / 1000.0;
+            this.y += Math.round(Ypusher) * 1000 / 1000.0;
             Ypusher -= Math.round(Ypusher);
         }
         // Print out info on vartiables 

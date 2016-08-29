@@ -10,7 +10,7 @@ public class PlayerObject extends GameObject {
 	//regular shooting
 	int interval = 200;
 	long lastShot = 0;
-	int shotSize = 3, shotSpeed = 200;
+	int shotSize = 4, shotSpeed = 200;
 	int[] shotOrigin = {shotSize, shotSpeed};
 	boolean shooting = false, invulnerable = false;
 	
@@ -34,7 +34,6 @@ public class PlayerObject extends GameObject {
 		int barW = hp * hpLen /maxHp , barH = 15; 
 		int barX = w - 200, barY = h - 70;
 		int outlineW = hpLen;
-		
 		
 		g.setColor(Color.green);
 		g.fillRect(barX, barY, barW, barH);
@@ -68,6 +67,7 @@ public class PlayerObject extends GameObject {
 			g.fillRect(x, y+ size / 2, charge * chargeLen / maxCharge, barH / 2);
 		}
 	}
+	
 	void charge(){
 		if(System.currentTimeMillis() - currChargeTime > chargeTime && maxCharge > charge){
 			currChargeTime = System.currentTimeMillis();
