@@ -41,6 +41,7 @@ public class MainGame extends JFrame{
             
             if(lag >= msPerFrame){
                 screen.render(k.getKeys());
+                
                 lag -= msPerFrame;
                 
 // FPS counter
@@ -65,6 +66,7 @@ public class MainGame extends JFrame{
     
     public static void main(String[] args){
         MainGame game = new MainGame();
+        
         game.begin();
         game.start();
         game.run();

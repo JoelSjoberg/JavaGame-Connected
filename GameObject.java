@@ -21,6 +21,8 @@ public class GameObject {
     int frames = 0;
     int lastAngle;
     
+    int damage = 25;
+    
     double originVectorX = 1;
     double originVectorY = 0;
     
@@ -60,7 +62,7 @@ public class GameObject {
             this.y += Math.round(Ypusher) * 1000 / 1000.0;
             Ypusher -= Math.round(Ypusher);
         }
-        // Print out info on vartiables 
+        //Print out info on vartiables 
         //System.out.println("Frames: " + frames + " | eq = " + 1000 / timeMs / speed + "    | Ypusher: " + Ypusher + " | Xpusher: " + Xpusher);
         //System.out.println("X: " + x + "    |   Y: " + y);
     }
@@ -71,6 +73,7 @@ public class GameObject {
         ydif = this.y - ob.y;
         //the circles collide if the vector between them = the sum of their size/2(radius)
         distance = Math.sqrt((Math.pow(xdif, 2) + Math.pow(ydif, 2)));
-        return (this.size/2 + ob.size/2) - 1 >= distance;
+        // put in a 5px safe-space
+        return (this.size/2 + ob.size/2) - 5 >= distance;
     }
 }

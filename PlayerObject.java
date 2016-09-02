@@ -20,8 +20,8 @@ public class PlayerObject extends GameObject {
 	int chargeLen = 50;
 	int chargeTime = 100;
 	long currChargeTime = 0;
-	
-	
+	long invulTime = 0;
+	long invulDuration = 500;
 	
 	ArrayList<GameObject> shots = new ArrayList();
 	
@@ -47,6 +47,9 @@ public class PlayerObject extends GameObject {
 			// Charger
 		g.drawRect(x, y + size/2, chargeLen, barH/2);
 		
+		if(invulTime < System.currentTimeMillis()){
+			this.invulnerable = false;
+		}
 		
 		//actions
 		if(shooting){
@@ -75,5 +78,10 @@ public class PlayerObject extends GameObject {
 			shotSize += 1;
 			shotSpeed += 20;
 		}
+	}
+	void hurt(int damage){
+		this.invulTime = System.currentTimeMillis() + invulDuration;
+		this.invulnerable = true;
+		this.hp -= damage;
 	}
 }
