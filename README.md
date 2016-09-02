@@ -7,3 +7,4 @@ Space shooter (test game)
 |             ^    |
 |__________________|
 ---ascii version---
+(open in raw)
