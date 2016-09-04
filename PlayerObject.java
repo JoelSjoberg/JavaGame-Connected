@@ -11,11 +11,12 @@ public class PlayerObject extends GameObject {
 	int interval = 200;
 	long lastShot = 0;
 	int shotSize = 4, shotSpeed = 200;
+	int maxShotSize = 20;
 	int[] shotOrigin = {shotSize, shotSpeed};
 	boolean shooting = false, invulnerable = false;
 	
 	//charge variables
-	int maxCharge = 15;
+	int maxCharge = maxShotSize - shotSize;
 	int charge = 0;
 	int chargeLen = 50;
 	int chargeTime = 100;
@@ -23,6 +24,8 @@ public class PlayerObject extends GameObject {
 	long invulTime = 0;
 	long invulDuration = 500;
 	
+	// player Colors
+// TODO: add color variables
 	ArrayList<GameObject> shots = new ArrayList();
 	
 	public PlayerObject(int x, int y, int size) {
@@ -34,11 +37,14 @@ public class PlayerObject extends GameObject {
 		int barW = hp * hpLen /maxHp , barH = 15; 
 		int barX = w - 200, barY = h - 70;
 		int outlineW = hpLen;
-		
+		if(hp <= 0){
+			barW = 0;
+			hp = 0;
+		}
 		g.setColor(Color.green);
 		g.fillRect(barX, barY, barW, barH);
 		g.setColor(Color.WHITE);
-		g.drawString("HP:" + hp + " / " + maxHp, barX, barY + 15);
+		g.drawString("Hp:" + hp + " / " + maxHp, barX, barY + 15);
 		
 		// White outline
 			// hp
@@ -49,6 +55,7 @@ public class PlayerObject extends GameObject {
 		
 		if(invulTime < System.currentTimeMillis()){
 			this.invulnerable = false;
+			this.color = Color.WHITE;
 		}
 		
 		//actions
@@ -83,5 +90,6 @@ public class PlayerObject extends GameObject {
 		this.invulTime = System.currentTimeMillis() + invulDuration;
 		this.invulnerable = true;
 		this.hp -= damage;
+		this.color = Color.BLUE;
 	}
 }

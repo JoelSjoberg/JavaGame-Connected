@@ -11,34 +11,45 @@ import javax.swing.JPanel;
 
 public class Screen extends JPanel{
 
-    private final int width;
-    private final int height;
+    int width;
+    int height;
     int counter;
     int frames = 0;
     int timeMs;
-    
+    int px = 0, py = 200, pSize = 50;
     int level = 0, section = 0;
     int points = 0;  
-    
-    long spawnTime = 1000;
-    long sysSpawnTime = System.currentTimeMillis() + spawnTime;
-    
-    public PlayerObject player;
-    public Level levels = new Level();
-    
+    int bgMaxSpeed = 500, bgMinSpeed = 60; 
+    int enemySpeed = 125, enemyAngle = 90;
+    int shotDirection = 270;
     boolean paused = false;
     
-    // for opacity
     float alpha = 1.0f;
-    ArrayList<GameObject> enemies = new ArrayList<GameObject>();
 
+    long spawnTime = 3500;
+    long sysSpawnTime = System.currentTimeMillis() + spawnTime;
+    
+    // text properties
+    int fontSize = 22;
+    int[] levelText = {10, 20};
+    int[] pointText = {100, 20}; // x coord: from right 
+    
+    
+    PlayerObject player;
+    Level levels = new Level();
+    
+
+    ArrayList<GameObject> enemies = new ArrayList<GameObject>();
     Background bg;
+    
     public Screen(int w, int h, int tm){
         this.width = w;
         this.height = h;
-        player = new PlayerObject(width / 2, 200, 50);
+        px = width / 2;
+        player = new PlayerObject(px, py, pSize);
         bg = new Background(width, height);
-        timeMs = tm; 
+        timeMs = tm;
+        bg.speed = bgMaxSpeed;
     }
     
     @Override
@@ -50,8 +61,9 @@ public class Screen extends JPanel{
         RenderingHints rh = new RenderingHints(
              RenderingHints.KEY_TEXT_ANTIALIASING,
              RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        
         if(!(paused)){
-        	alpha = 1.0f;
+        	//alpha = 1.0f;
 	        g.setRenderingHints(rh);
 	        g.setColor(Color.BLACK);
 	        g.fillRect(0, 0, width, height);
@@ -59,11 +71,15 @@ public class Screen extends JPanel{
 	        
 	        // draw every GameObject
 	        player.draw(g);
-        	for(GameObject ob: enemies){
-        		ob.move(90, timeMs);
-        		ob.draw(g);
-        		if(ob.y > height) ob.y = 0;
-        	}
+	        try{
+	        	for(GameObject ob: enemies){
+	        		ob.move(enemyAngle, timeMs);
+	        		ob.draw(g);
+        				if(ob.y > height) enemies.remove(ob);        			
+	        	}
+	        }catch(ConcurrentModificationException e){
+	        	
+	        }
         	for(GameObject ob: enemies){
 				if(player.collide(ob, g) && ! player.invulnerable){
 					player.hurt(ob.damage);
@@ -73,14 +89,16 @@ public class Screen extends JPanel{
         		try{
         			for(GameObject ob: player.shots){
         				ob.draw(g);
-        				ob.move(270, timeMs);
+        				ob.move(shotDirection, timeMs);
         				if(ob.y < 0){
-        					player.shots.remove(this);
+        					player.shots.remove(ob);
         				}
         				for(GameObject enemy: enemies){
         					if(ob.collide(enemy, g)){
         						enemies.remove(enemy);
-        						player.shots.remove(ob);
+        						if(!(ob.size > player.maxShotSize / 2)){
+        							player.shots.remove(ob);        							
+        						}
         						points++;
         					}
         				}
@@ -93,9 +111,9 @@ public class Screen extends JPanel{
         
         	// Draw the current level and section
 	        g.setColor(Color.WHITE);
-	        g.setFont(new Font("TimesRoman", Font.PLAIN, 22));
-	        g.drawString(level +" - " + section, 10, 20);
-	        g.drawString("Points:" + points, width - 100, 20);
+	        g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
+	        g.drawString(level +" - " + section, levelText[0], levelText[1]);
+	        g.drawString("Points:" + points, width - pointText[0], pointText[1]);
         }else{// paused
         	alpha = 0.3f;
         	g.fillRect(0, 0, width, height);
@@ -110,12 +128,11 @@ public class Screen extends JPanel{
     		//--------------------- SPAWN ENEMIES-----------------
     		if((enemies.size() == 0 && System.currentTimeMillis() > sysSpawnTime) || System.currentTimeMillis() > sysSpawnTime){
     			try{
-    				System.out.println(true);
-    				spawnTime = 300;
+    				bg.speed = bgMinSpeed;
+    				//spawnTime += 2000;
     				sysSpawnTime = System.currentTimeMillis() + spawnTime;
     				spawnEnemies(level, section);
     				section++;
-// TODO: (a lot...) avoid indexoutofbounds if section > limit!
     				if(section == levels.levels[level].length){
     					section = 0;
     					level++;
@@ -156,6 +173,8 @@ public class Screen extends JPanel{
     		}
     		
     	}else{// game is paused
+//TODO: if player pauses make sure to update sysSpawnTime accordingly to avoid abuse of spawning
+    		sysSpawnTime = System.currentTimeMillis();
     		if(!keys[27]){
     			paused = false;
     		}
@@ -167,8 +186,9 @@ public class Screen extends JPanel{
 // TODO: make enemies appear in patterns
     	try{
     		for(int i = 0; i < levels.levels[level][section]; i++){
-    			enemies.add(new GameObject((int)(Math.random()*(width - 50) + 1), 10, 50, 125));
-    			enemies.get(i).color = Color.RED;
+    			enemies.add(new GameObject(
+    					(int)(Math.random()*(width - 50) + 1), 10, 50, enemySpeed));
+    			enemies.get(i).setColor(Color.RED);
     		}    		
     	}catch(ArrayIndexOutOfBoundsException e){
     		System.out.println("No more levels");

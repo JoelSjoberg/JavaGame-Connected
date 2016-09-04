@@ -34,7 +34,7 @@ public class GameObject {
     Color color = Color.WHITE;
     
     void draw(Graphics2D g){
-       g.setColor(color);
+       g.setColor(this.color);
        g.drawOval(x - size/2, y - size/2, size, size);
    }
     void setColor(Color c){

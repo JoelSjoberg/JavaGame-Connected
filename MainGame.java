@@ -57,12 +57,6 @@ public class MainGame extends JFrame{
     private void start(){
         running = true;
     }
-    private void stop(){
-        running = false;
-    }
-    public int getTimeMs(){
-        return msPerFrame;
-    }
     
     public static void main(String[] args){
         MainGame game = new MainGame();
