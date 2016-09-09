@@ -13,7 +13,6 @@ public class Screen extends JPanel{
 
     int width;
     int height;
-    int counter;
     int frames = 0;
     int timeMs;
     int px = 0, py = 200, pSize = 50;
@@ -22,6 +21,11 @@ public class Screen extends JPanel{
     int bgMaxSpeed = 500, bgMinSpeed = 60; 
     int enemySpeed = 125, enemyAngle = 90;
     int shotDirection = 270;
+    
+    // input vars
+    int up = 38, down = 40, left = 37, right = 39;
+    int shoot = 65;
+    int pause = 27;
     boolean paused = false;
     
     float alpha = 1.0f;
@@ -43,6 +47,7 @@ public class Screen extends JPanel{
     Background bg;
     
     public Screen(int w, int h, int tm){
+    	System.out.println(shoot);
         this.width = w;
         this.height = h;
         px = width / 2;
@@ -150,24 +155,24 @@ public class Screen extends JPanel{
     		else if(keys[38] && keys[39]) player.move(315, timeMs);
     		else if(keys[40] && keys[39]) player.move(45, timeMs);
     		else{
-    			if(keys[37]){
+    			if(keys[left]){
     				player.move(180, timeMs);
-    			}if(keys[38]){
+    			}if(keys[up]){
     				player.move(270, timeMs);
-    			}if(keys[39]){
+    			}if(keys[right]){
     				player.move(0, timeMs);
-    			}if(keys[40]){
+    			}if(keys[down]){
     				player.move(90, timeMs);
     			}  
     		}
     		
     		// abilities
-    		if(keys[65]){
+    		if(keys[shoot]){
     			player.shooting = true;
     		}else{
     			player.shooting = false;
     		}
-    		if(keys[27]){
+    		if(keys[pause]){
 // TODO: make the pause more responsive, right now it lags and shifts the boolean
     			paused = true;
     		}
@@ -175,7 +180,7 @@ public class Screen extends JPanel{
     	}else{// game is paused
 //TODO: if player pauses make sure to update sysSpawnTime accordingly to avoid abuse of spawning
     		sysSpawnTime = System.currentTimeMillis();
-    		if(!keys[27]){
+    		if(!keys[pause]){
     			paused = false;
     		}
     	}
@@ -187,7 +192,7 @@ public class Screen extends JPanel{
     	try{
     		for(int i = 0; i < levels.levels[level][section]; i++){
     			enemies.add(new GameObject(
-    					(int)(Math.random()*(width - 50) + 1), 10, 50, enemySpeed));
+    					(int)(Math.random()*(width - 50) + 1), 0, 50, enemySpeed));
     			enemies.get(i).setColor(Color.RED);
     		}    		
     	}catch(ArrayIndexOutOfBoundsException e){
